@@ -1,0 +1,294 @@
+/* ============================================================
+   style.css – Main Stylesheet
+   PURPOSE : Makes the app look clean and modern.
+             Uses CSS Variables (easy to change theme colours).
+   ============================================================ */
+
+/* ── CSS Variables: change these to retheme the whole app ── */
+:root {
+  --primary    : #4f46e5;   /* indigo */
+  --success    : #16a34a;   /* green  */
+  --danger     : #dc2626;   /* red    */
+  --warning    : #d97706;   /* amber  */
+  --bg         : #0f172a;   /* dark background */
+  --surface    : #1e293b;   /* card background */
+  --border     : #334155;   /* border colour */
+  --text       : #f1f5f9;   /* main text  */
+  --muted      : #94a3b8;   /* secondary text */
+  --radius     : 12px;
+  --shadow     : 0 4px 24px rgba(0,0,0,0.4);
+}
+
+/* ── Reset & Base ── */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* ── Navigation Bar ── */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 40px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.logo {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.nav-links a {
+  color: var(--muted);
+  text-decoration: none;
+  margin-left: 24px;
+  font-size: 0.95rem;
+  transition: color 0.2s;
+}
+
+.nav-links a:hover {
+  color: var(--text);
+}
+
+/* ── Hero Section (Home Page) ── */
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60px 20px 40px;
+  text-align: center;
+}
+
+.hero h1 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  color: var(--muted);
+  font-size: 1.05rem;
+  margin-bottom: 40px;
+}
+
+/* ── Card Grid (Home Page) ── */
+.card-container {
+  display: flex;
+  gap: 30px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 50px;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 36px 32px;
+  width: 280px;
+  cursor: pointer;
+  transition: transform 0.2s, border-color 0.2s;
+  box-shadow: var(--shadow);
+  text-align: center;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  border-color: var(--primary);
+}
+
+.card-icon {
+  font-size: 2.8rem;
+  margin-bottom: 14px;
+}
+
+.card h2 {
+  font-size: 1.3rem;
+  margin-bottom: 10px;
+}
+
+.card p {
+  color: var(--muted);
+  font-size: 0.9rem;
+  margin-bottom: 20px;
+}
+
+/* ── Users Section ── */
+.users-section {
+  margin-top: 10px;
+}
+
+.users-section h3 {
+  font-size: 1.1rem;
+  margin-bottom: 14px;
+  color: var(--muted);
+}
+
+.badge {
+  display: inline-block;
+  background: var(--primary);
+  color: #fff;
+  padding: 5px 14px;
+  border-radius: 99px;
+  font-size: 0.85rem;
+  margin: 4px;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+/* ── Inner Page Layout ── */
+.page-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 50px 20px;
+}
+
+.page-container h1 {
+  font-size: 2rem;
+  margin-bottom: 8px;
+}
+
+/* ── Form Card ── */
+.form-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 30px;
+  margin: 30px 0;
+  box-shadow: var(--shadow);
+}
+
+label {
+  display: block;
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+
+.input-field {
+  width: 100%;
+  padding: 12px 16px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  font-size: 1rem;
+  margin-bottom: 20px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.input-field:focus {
+  border-color: var(--primary);
+}
+
+/* ── Button Styles ── */
+.btn-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.btn {
+  padding: 10px 22px;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.1s;
+  font-weight: 600;
+}
+
+.btn:hover:not(:disabled) {
+  opacity: 0.85;
+  transform: translateY(-1px);
+}
+
+.btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.btn-primary { background: var(--primary); color: #fff; }
+.btn-success { background: var(--success); color: #fff; }
+.btn-danger  { background: var(--danger);  color: #fff; }
+
+/* ── Status Box (Registration Page) ── */
+.status-box {
+  padding: 12px 16px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin-bottom: 14px;
+}
+
+/* ── Progress Bar ── */
+.progress-container {
+  background: var(--bg);
+  border-radius: 99px;
+  height: 8px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  width: 0%;
+  background: var(--primary);
+  border-radius: 99px;
+  transition: width 0.3s ease;
+}
+
+/* ── Result Box (Recognize Page) ── */
+.result-box {
+  padding: 18px 20px;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-top: 10px;
+  border: 1px solid var(--border);
+}
+
+.result-info    { background: #1e3a5f; border-color: #3b82f6; }
+.result-success { background: #14532d; border-color: var(--success); }
+.result-warning { background: #451a03; border-color: var(--warning); }
+.result-error   { background: #450a0a; border-color: var(--danger); }
+
+/* ── Camera / Video ── */
+.camera-section {
+  text-align: center;
+}
+
+.video-feed {
+  width: 100%;
+  max-width: 640px;
+  border-radius: var(--radius);
+  border: 2px solid var(--border);
+  background: #000;
+}
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+  .hero h1     { font-size: 1.8rem; }
+  .card        { width: 100%; }
+  .navbar      { padding: 14px 20px; }
+  .btn-row     { flex-direction: column; }
+}

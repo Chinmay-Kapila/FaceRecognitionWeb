@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<!--
+  register.html – Face Registration Page
+  PURPOSE : User enters their name, clicks "Start Capture",
+            browser sends webcam frames to Flask /capture API,
+            Flask saves face images as a .npy file in /data/.
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Register Face</title>
+  <link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+
+  <nav class="navbar">
+    <span class="logo">🧠 FaceRecog</span>
+    <div class="nav-links">
+      <a href="/">Home</a>
+      <a href="/register">Register</a>
+      <a href="/recognize">Recognize</a>
+    </div>
+  </nav>
+
+  <main class="page-container">
+    <h1>📷 Register Your Face</h1>
+    <p class="subtitle">Stand in front of the camera. We'll capture 30 face images.</p>
+
+    <!-- ── FORM: Enter person's name ── -->
+    <!-- NOTE: We use a <div> with onclick instead of <form> submit
+         so we can handle everything with JavaScript fetch() -->
+    <div class="form-card">
+      <label for="nameInput">Enter Your Name</label>
+      <input
+        type="text"
+        id="nameInput"
+        class="input-field"
+        placeholder="e.g. QunadaleDingle"
+        maxlength="30"
+      />
+
+      <!-- Buttons -->
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="startCapture()">▶ Start Capture</button>
+        <button class="btn btn-danger"  onclick="stopCapture()"  id="stopBtn" disabled>⏹ Stop</button>
+        <button class="btn btn-success" onclick="saveData()"     id="saveBtn" disabled>💾 Save Data</button>
+      </div>
+
+      <!-- Status messages -->
+      <div id="status-box" class="status-box">Press "Start Capture" to begin.</div>
+      <div id="progress-bar-container" class="progress-container">
+        <div id="progress-bar" class="progress-bar"></div>
+      </div>
+    </div>
+
+    <!-- ── Webcam video + hidden canvas ── -->
+    <div class="camera-section">
+      <video id="video" class="video-feed" autoplay playsinline></video>
+      <!-- Canvas is hidden; used only to grab frames programmatically -->
+      <canvas id="canvas" style="display:none;" width="640" height="480"></canvas>
+    </div>
+
+  </main>
+
+  <!-- camera.js handles all webcam + API logic -->
+  <script src="/static/js/camera.js"></script>
+  <!-- oop_demo.js shows OOP concept (not needed for functionality) -->
+  <script src="/static/js/oop_demo.js"></script>
+
+</body>
+</html>

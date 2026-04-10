@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<!--
+  index.html – Home Page
+  PURPOSE : Landing page with two big buttons.
+            Links to Register and Recognize pages.
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Face Recognition System</title>
+  <link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+
+  <!-- ── Navigation Bar ── -->
+  <nav class="navbar">
+    <span class="logo">🧠 FaceRecog</span>
+    <div class="nav-links">
+      <a href="/">Home</a>
+      <a href="/register">Register</a>
+      <a href="/recognize">Recognize</a>
+      <a href="/static/react/react_demo.html">React Demo</a>
+    </div>
+  </nav>
+
+  <!-- ── Hero Section ── -->
+  <main class="hero">
+    <h1>Face Recognition System</h1>
+    <p class="subtitle">Powered by OpenCV + KNN + Flask</p>
+
+    <!-- Two main action cards -->
+    <div class="card-container">
+
+      <div class="card" onclick="window.location.href='/register'">
+        <div class="card-icon">📷</div>
+        <h2>Register Face</h2>
+        <p>Capture and save your face data for training.</p>
+        <button class="btn btn-primary">Start Registration</button>
+      </div>
+
+      <div class="card" onclick="window.location.href='/recognize'">
+        <div class="card-icon">🔍</div>
+        <h2>Recognize Face</h2>
+        <p>Point camera to identify a registered person.</p>
+        <button class="btn btn-success">Start Recognition</button>
+      </div>
+
+    </div>
+
+    <!-- Registered users list – loaded via JavaScript fetch() -->
+    <div class="users-section">
+      <h3>Registered Users</h3>
+      <div id="user-list">Loading...</div>
+    </div>
+  </main>
+
+  <!-- ── JavaScript: load registered users on page load ── -->
+  <script>
+    // fetch() is a browser built-in to call APIs
+    fetch('/registered_users')
+      .then(response => response.json())   // parse JSON from Flask
+      .then(data => {
+        const list = document.getElementById('user-list');
+        if (data.users.length === 0) {
+          list.innerHTML = '<p class="muted">No users registered yet.</p>';
+        } else {
+          // Build a badge for each user
+          list.innerHTML = data.users
+            .map(u => `<span class="badge">${u}</span>`)
+            .join('');
+        }
+      })
+      .catch(() => {
+        document.getElementById('user-list').innerHTML = '<p class="muted">Could not load users.</p>';
+      });
+  </script>
+
+</body>
+</html>

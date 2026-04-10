@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>React Demo</title>
+
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+
+<body>
+  <h2>React Demo</h2>
+  <div id="root"></div>
+
+  <script type="text/babel">
+
+    // Functional Component (useState Hook)
+    function Demo() {
+      const [text, setText] = React.useState("");
+
+      return (
+        <div>
+          <input onChange={(e) => setText(e.target.value)} />
+          <p>Hello {text}</p>
+        </div>
+      );
+    }
+
+    // Class Component
+    class Info extends React.Component {
+      render() {
+        return <h3>Face Recognition Project</h3>;
+      }
+    }
+
+    function App() {
+      return (
+        <div>
+          <Demo />
+          <Info />
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+
+  </script>
+</body>
+</html>

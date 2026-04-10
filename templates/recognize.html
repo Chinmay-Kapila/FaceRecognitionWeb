@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<!--
+  recognize.html – Face Recognition Page
+  PURPOSE : Opens webcam, sends frame to Flask /predict API,
+            displays the predicted person's name on screen.
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Recognize Face</title>
+  <link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+
+  <nav class="navbar">
+    <span class="logo">🧠 FaceRecog</span>
+    <div class="nav-links">
+      <a href="/">Home</a>
+      <a href="/register">Register</a>
+      <a href="/recognize">Recognize</a>
+    </div>
+  </nav>
+
+  <main class="page-container">
+    <h1>🔍 Recognize Face</h1>
+    <p class="subtitle">Click "Predict" to identify the person in front of the camera.</p>
+
+    <div class="form-card">
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="openCamera()">📷 Open Camera</button>
+        <button class="btn btn-success" onclick="predictFace()" id="predictBtn" disabled>🔍 Predict</button>
+        <button class="btn btn-danger"  onclick="stopCamera()"  id="stopCamBtn" disabled>⏹ Stop</button>
+      </div>
+
+      <!-- Result display box -->
+      <div id="result-box" class="result-box">
+        <span id="result-text">Result will appear here...</span>
+      </div>
+    </div>
+
+    <div class="camera-section">
+      <video id="video" class="video-feed" autoplay playsinline></video>
+      <canvas id="canvas" style="display:none;" width="640" height="480"></canvas>
+    </div>
+  </main>
+
+  <script>
+    // ── Webcam stream reference ──
+    let stream = null;
+
+    // Open the webcam
+    async function openCamera() {
+      try {
+        stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        document.getElementById('video').srcObject = stream;
+        document.getElementById('predictBtn').disabled = false;
+        document.getElementById('stopCamBtn').disabled = false;
+        setResult('Camera ready! Click Predict to identify.', 'info');
+      } catch (err) {
+        setResult('Camera error: ' + err.message, 'error');
+      }
+    }
+
+    // Capture one frame and send to Flask /predict
+    async function predictFace() {
+      const video  = document.getElementById('video');
+      const canvas = document.getElementById('canvas');
+      const ctx    = canvas.getContext('2d');
+
+      // Draw current video frame onto the hidden canvas
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+      // Convert canvas to base64 JPEG string
+      const imageData = canvas.toDataURL('image/jpeg', 0.8);
+
+      setResult('⏳ Predicting...', 'info');
+
+      try {
+        // Send frame to Flask backend
+        const response = await fetch('/predict', {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body:    JSON.stringify({ image: imageData })
+        });
+        const data = await response.json();
+
+        if (data.status === 'success') {
+          setResult('✅ Identified: ' + data.name, 'success');
+        } else if (data.status === 'no_face') {
+          setResult('⚠️ No face detected. Try again.', 'warning');
+        } else {
+          setResult('❌ Error: ' + data.message, 'error');
+        }
+      } catch (err) {
+        setResult('❌ Server error: ' + err.message, 'error');
+      }
+    }
+
+    // Stop camera stream
+    function stopCamera() {
+      if (stream) {
+        stream.getTracks().forEach(t => t.stop());
+        stream = null;
+      }
+      document.getElementById('predictBtn').disabled = true;
+      document.getElementById('stopCamBtn').disabled = true;
+      setResult('Camera stopped.', 'info');
+    }
+
+    // Helper to update result box with colour-coded message
+    function setResult(msg, type) {
+      const box  = document.getElementById('result-box');
+      const text = document.getElementById('result-text');
+      text.textContent = msg;
+      box.className = 'result-box result-' + type;
+    }
+  </script>
+
+</body>
+</html>
