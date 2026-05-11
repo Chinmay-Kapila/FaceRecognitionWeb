@@ -144,6 +144,6 @@ def registered_users():
     users = [f[:-4] for f in os.listdir(DATA_PATH) if f.endswith('.npy')]
     return jsonify({'users': users})
 
-
 if __name__ == '__main__':
-    app.run(debug=True)   # debug=True gives helpful error messages during development
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port)
